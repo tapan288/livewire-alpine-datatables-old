@@ -23,6 +23,9 @@
     selectAllItems() {
         this.selectAll = true;
         this.checked = this.allStudents;
+    },
+    exportStudents() {
+        $wire.emit('exportStudents', this.checked);
     }
 }">
     <div class="d-flex justify-content-between align-content-center my-2">
@@ -75,7 +78,7 @@
                             Delete
                         </a>
                     </li>
-                    <li><a href="#" class="dropdown-item" type="button">
+                    <li><a href="#" @click="exportStudents" class="dropdown-item" type="button">
                             Export
                         </a>
                     </li>

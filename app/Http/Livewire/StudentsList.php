@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\StudentsExport;
 use App\Models\Student;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -35,6 +36,7 @@ class StudentsList extends Component
     protected $listeners = [
         'deleteSingleRecord',
         'deleteMultipleRecords',
+        'exportStudents'
     ];
 
     public function updatedSelectedClass($value)
@@ -75,5 +77,10 @@ class StudentsList extends Component
     public function updatedPaginate()
     {
         $this->studentsInPage = $this->students->pluck('id')->toArray();
+    }
+
+    public function exportStudents(array $checked)
+    {
+        return (new StudentsExport($checked))->download(now() . ' - students.xlsx');
     }
 }
