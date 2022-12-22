@@ -66,6 +66,8 @@ class StudentsList extends Component
         } else {
             $this->sortField = $sortField;
         }
+
+        $this->studentsInPage = $this->students->pluck('id')->toArray();
     }
 
     public function getStudentsProperty()

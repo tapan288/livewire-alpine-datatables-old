@@ -1,4 +1,4 @@
-<div x-init="$watch('selectPage', value => selectPageUpdated(value))" x-data="{
+<div x-cloak x-init="$watch('selectPage', value => selectPageUpdated(value))" x-data="{
     studentsInPage: @entangle('studentsInPage'),
     allStudents: @entangle('allStudents'),
     selectPage: false,
@@ -68,7 +68,7 @@
                 </div>
             @endif
 
-            <div class="dropdown ms-4" x-show="checked.length > 0">
+            <div class="dropdown ms-4" x-show="checked.length > 0" x-transition>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     With Checked (<span x-text="checked.length"></span>)
@@ -100,7 +100,7 @@
 
     <br>
 
-    <div class="col-md-10 mb-3">
+    <div class="col-md-10 mb-3" x-transition>
         <div x-show="selectAll && selectPage">
             You are currently selecting <strong x-text="checked.length"></strong> items.
         </div>
