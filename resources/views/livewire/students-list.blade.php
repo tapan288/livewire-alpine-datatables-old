@@ -14,20 +14,28 @@
             <div>
                 <div class="d-flex align-items-center ms-4">
                     <label for="paginate" class="text-nowrap me-2">FilterBy Class</label>
-                    <select class="form-control form-control-sm">
+                    <select class="form-control form-control-sm" wire:model="selectedClass">
                         <option value="">All Class</option>
+                        @foreach ($classes as $class)
+                            <option value="{{ $class->id }}">{{ $class->name }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
 
-            <div>
-                <div class="d-flex align-items-center ms-4">
-                    <label for="paginate" class="text-nowrap me-2 mb-0">Section</label>
-                    <select class="form-control form-control-sm">
-                        <option value="">Select a Section</option>
-                    </select>
+            @if ($selectedClass)
+                <div>
+                    <div class="d-flex align-items-center ms-4">
+                        <label for="paginate" class="text-nowrap me-2 mb-0">Section</label>
+                        <select class="form-control form-control-sm" wire:model="selectedSection">
+                            <option value="">Select a Section</option>
+                            @foreach ($sections as $section)
+                                <option value="{{ $section->id }}">{{ $section->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
-            </div>
+            @endif
 
             <div class="dropdown ms-4" x-show="checked.length > 0">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
