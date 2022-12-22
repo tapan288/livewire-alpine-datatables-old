@@ -2,10 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use App\Exports\StudentsExport;
 use App\Models\Student;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Exports\StudentsExport;
 
 class StudentsList extends Component
 {
@@ -17,6 +17,7 @@ class StudentsList extends Component
     public $paginate = 10;
     public $sections = [];
     public $search = '';
+    public $sortField = 'name', $sortDirection = 'asc';
     public $selectedClass = null, $selectedSection = null;
 
     public function mount()
@@ -49,12 +50,22 @@ class StudentsList extends Component
     {
         return Student::with(['class', 'section'])
             ->search(trim($this->search))
+            ->orderBy($this->sortField, $this->sortDirection)
             ->when($this->selectedClass, function ($query) {
                 return $query->where('class_id', $this->selectedClass);
             })
             ->when($this->selectedSection, function ($query) {
                 return $query->where('section_id', $this->selectedSection);
             });
+    }
+
+    public function changeSort($sortField)
+    {
+        if ($this->sortField == $sortField) {
+            $this->sortDirection = $this->sortDirection == 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $sortField;
+        }
     }
 
     public function getStudentsProperty()

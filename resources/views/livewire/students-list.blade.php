@@ -3,6 +3,8 @@
     allStudents: @entangle('allStudents'),
     selectPage: false,
     selectAll: false,
+    sortField: @entangle('sortField'),
+    sortDirection: @entangle('sortDirection'),
     checked: [],
     deleteSingleRecord(id) {
         this.checked = this.checked.filter(item => item !== id);
@@ -115,23 +117,31 @@
                 <tr>
                     <th><input type="checkbox" x-model="selectPage"></th>
                     <th>
-                        <a href="#">
+                        <a href="#" wire:click="changeSort('name')">
                             Student's Name
+                            <span x-show="sortDirection == 'desc' && sortField == 'name'">&uarr;</span>
+                            <span x-show="sortDirection == 'asc' && sortField == 'name'">&darr;</span>
                         </a>
                     </th>
                     <th>
-                        <a href="#">
+                        <a href="#" wire:click="changeSort('email')">
                             Email
+                            <span x-show="sortDirection == 'desc' && sortField == 'email'">&uarr;</span>
+                            <span x-show="sortDirection == 'asc' && sortField == 'email'">&darr;</span>
                         </a>
                     </th>
                     <th>
-                        <a href="#">
+                        <a href="#" wire:click="changeSort('address')">
                             Address
+                            <span x-show="sortDirection == 'desc' && sortField == 'address'">&uarr;</span>
+                            <span x-show="sortDirection == 'asc' && sortField == 'address'">&darr;</span>
                         </a>
                     </th>
                     <th>
-                        <a href="#">
+                        <a href="#" wire:click="changeSort('phone_number')">
                             Phone Number
+                            <span x-show="sortDirection == 'desc' && sortField == 'phone_number'">&uarr;</span>
+                            <span x-show="sortDirection == 'asc' && sortField == 'phone_number'">&darr;</span>
                         </a>
                     </th>
                     <th>Class</th>
