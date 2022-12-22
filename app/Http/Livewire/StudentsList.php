@@ -11,15 +11,23 @@ class StudentsList extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
+    public $studentsInPage = [], $allStudents = [];
+
     public $paginate = 10;
     public $sections = [];
     public $search = '';
     public $selectedClass = null, $selectedSection = null;
 
+    public function mount()
+    {
+        $this->allStudents = $this->studentsQuery->pluck('id')->toArray();
+        $this->studentsInPage = $this->students->pluck('id')->toArray();
+    }
+
     public function render()
     {
         return view('livewire.students-list', [
-            'students' => $this->studentsQuery->paginate($this->paginate),
+            'students' => $this->students,
             'classes' => \App\Models\Classes::all(),
         ]);
     }
@@ -47,6 +55,11 @@ class StudentsList extends Component
             });
     }
 
+    public function getStudentsProperty()
+    {
+        return $this->studentsQuery->paginate($this->paginate);
+    }
+
     public function deleteSingleRecord($id)
     {
         Student::find($id)->delete();
@@ -57,5 +70,10 @@ class StudentsList extends Component
     {
         Student::whereIn('id', $checked)->delete();
         session()->flash('message', 'Students deleted successfully.');
+    }
+
+    public function updatedPaginate()
+    {
+        $this->studentsInPage = $this->students->pluck('id')->toArray();
     }
 }

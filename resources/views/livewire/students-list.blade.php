@@ -1,4 +1,8 @@
-<div x-data="{
+<div x-init="$watch('selectPage', value => selectPageUpdated(value))" x-data="{
+    studentsInPage: @entangle('studentsInPage'),
+    allStudents: @entangle('allStudents'),
+    selectPage: false,
+    selectAll: false,
     checked: [],
     deleteSingleRecord(id) {
         this.checked = this.checked.filter(item => item !== id);
@@ -7,6 +11,18 @@
     deleteMultipleRecords() {
         $wire.emit('deleteMultipleRecords', this.checked);
         this.checked = [];
+    },
+    selectPageUpdated(value) {
+        if (value) {
+            this.checked = this.studentsInPage;
+        } else {
+            this.selectAll = false;
+            this.checked = [];
+        }
+    },
+    selectAllItems() {
+        this.selectAll = true;
+        this.checked = this.allStudents;
     }
 }">
     <div class="d-flex justify-content-between align-content-center my-2">
@@ -80,13 +96,13 @@
     <br>
 
     <div class="col-md-10 mb-3">
-        <div>
-            You are currently selecting <strong>4</strong> items.
+        <div x-show="selectAll && selectPage">
+            You are currently selecting <strong x-text="checked.length"></strong> items.
         </div>
-        <div>
-            You have selected <strong>4</strong> items, Do you want to Select All
-            <strong>100</strong> items?
-            <a href="#" class="ml-2">Select All</a>
+        <div x-show="selectPage && !selectAll">
+            You have selected <strong x-text="checked.length"></strong> items, Do you want to Select All
+            <strong x-text="allStudents.length"></strong> items?
+            <a href="#" @click="selectAllItems" class="ml-2">Select All</a>
         </div>
     </div>
 
@@ -94,7 +110,7 @@
         <table class="table table-hover">
             <tbody>
                 <tr>
-                    <th><input type="checkbox"></th>
+                    <th><input type="checkbox" x-model="selectPage"></th>
                     <th>
                         <a href="#">
                             Student's Name
