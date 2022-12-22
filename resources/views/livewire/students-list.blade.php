@@ -56,7 +56,8 @@
         </div>
 
         <div class="col-md-4">
-            <input type="search" class="form-control" placeholder="Search by name,email,phone,or address...">
+            <input wire:model.debounce.500ms="search" type="search" class="form-control"
+                placeholder="Search by name,email,phone,or address...">
         </div>
     </div>
 

@@ -13,6 +13,7 @@ class StudentsList extends Component
 
     public $paginate = 10;
     public $sections = [];
+    public $search = '';
     public $selectedClass = null, $selectedSection = null;
 
     public function render()
@@ -32,6 +33,7 @@ class StudentsList extends Component
     public function getStudentsQueryProperty()
     {
         return Student::with(['class', 'section'])
+            ->search(trim($this->search))
             ->when($this->selectedClass, function ($query) {
                 return $query->where('class_id', $this->selectedClass);
             })
