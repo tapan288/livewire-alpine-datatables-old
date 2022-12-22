@@ -1,4 +1,14 @@
-<div>
+<div x-data="{
+    checked: [],
+    deleteSingleRecord(id) {
+        this.checked = this.checked.filter(item => item !== id);
+        $wire.emit('deleteSingleRecord', id);
+    },
+    deleteMultipleRecords() {
+        $wire.emit('deleteMultipleRecords', this.checked);
+        this.checked = [];
+    }
+}">
     <div class="d-flex justify-content-between align-content-center my-2">
         <div class="d-flex">
             <div>
@@ -40,10 +50,12 @@
             <div class="dropdown ms-4" x-show="checked.length > 0">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    With Checked (1)
+                    With Checked (<span x-text="checked.length"></span>)
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a href="#" class="dropdown-item" type="button">
+                    <li><a href="#" class="dropdown-item" type="button"
+                            onclick="confirm('Are you sure you want to delete these records?') || event.stopImmediatePropagation()"
+                            @click="deleteMultipleRecords">
                             Delete
                         </a>
                     </li>
@@ -82,7 +94,7 @@
         <table class="table table-hover">
             <tbody>
                 <tr>
-                    <th><input type="checkbox" x-model="selectPage"></th>
+                    <th><input type="checkbox"></th>
                     <th>
                         <a href="#">
                             Student's Name
@@ -110,7 +122,7 @@
                 @foreach ($students as $student)
                     <tr>
                         <td>
-                            <input type="checkbox" />
+                            <input type="checkbox" value="{{ $student->id }}" x-model="checked" />
                         </td>
                         <td>{{ $student->name }}</td>
                         <td>{{ $student->email }}</td>
@@ -119,7 +131,9 @@
                         <td>{{ $student->class->name }}</td>
                         <td>{{ $student->section->name }}</td>
                         <td>
-                            <button class="btn btn-danger btn-sm">
+                            <button class="btn btn-danger btn-sm"
+                                onclick="confirm('Are you sure you want to delete this record?') || event.stopImmediatePropagation()"
+                                @click="deleteSingleRecord({{ $student->id }})">
                                 Delete
                             </button>
                         </td>

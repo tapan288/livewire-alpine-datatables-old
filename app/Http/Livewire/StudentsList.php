@@ -24,6 +24,11 @@ class StudentsList extends Component
         ]);
     }
 
+    protected $listeners = [
+        'deleteSingleRecord',
+        'deleteMultipleRecords',
+    ];
+
     public function updatedSelectedClass($value)
     {
         $this->sections = \App\Models\Section::where('class_id', $value)->get();
@@ -40,5 +45,17 @@ class StudentsList extends Component
             ->when($this->selectedSection, function ($query) {
                 return $query->where('section_id', $this->selectedSection);
             });
+    }
+
+    public function deleteSingleRecord($id)
+    {
+        Student::find($id)->delete();
+        session()->flash('message', 'Student deleted successfully.');
+    }
+
+    public function deleteMultipleRecords(array $checked)
+    {
+        Student::whereIn('id', $checked)->delete();
+        session()->flash('message', 'Students deleted successfully.');
     }
 }
