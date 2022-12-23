@@ -3,6 +3,7 @@
     allStudents: @entangle('allStudents'),
     selectPage: false,
     selectAll: false,
+    selectedClass: @entangle('selectedClass'),
     sortField: @entangle('sortField'),
     sortDirection: @entangle('sortDirection'),
     checked: [],
@@ -54,19 +55,18 @@
                 </div>
             </div>
 
-            @if ($selectedClass)
-                <div>
-                    <div class="d-flex align-items-center ms-4">
-                        <label for="paginate" class="text-nowrap me-2 mb-0">Section</label>
-                        <select class="form-control form-control-sm" wire:model="selectedSection">
-                            <option value="">Select a Section</option>
-                            @foreach ($sections as $section)
-                                <option value="{{ $section->id }}">{{ $section->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+
+            <div x-show="selectedClass" x-transition>
+                <div class="d-flex align-items-center ms-4">
+                    <label for="paginate" class="text-nowrap me-2 mb-0">Section</label>
+                    <select class="form-control form-control-sm" wire:model="selectedSection">
+                        <option value="">Select a Section</option>
+                        @foreach ($sections as $section)
+                            <option value="{{ $section->id }}">{{ $section->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
-            @endif
+            </div>
 
             <div class="dropdown ms-4" x-show="checked.length > 0" x-transition>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
@@ -95,7 +95,7 @@
     </div>
 
     <div class="col-md-12 my-3">
-        {{-- include flash messages here --}}
+        @include('includes.alerts')
     </div>
 
     <br>

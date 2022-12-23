@@ -78,13 +78,13 @@ class StudentsList extends Component
     public function deleteSingleRecord($id)
     {
         Student::find($id)->delete();
-        session()->flash('message', 'Student deleted successfully.');
+        session()->flash('success', 'Student deleted successfully.');
     }
 
     public function deleteMultipleRecords(array $checked)
     {
         Student::whereIn('id', $checked)->delete();
-        session()->flash('message', 'Students deleted successfully.');
+        session()->flash('success', 'Students deleted successfully.');
     }
 
     public function updatedPaginate()
